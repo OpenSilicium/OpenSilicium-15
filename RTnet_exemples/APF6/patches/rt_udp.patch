@@ -1,0 +1,10 @@
+--- xenomai-3.0-rc4.old/kernel/drivers/net/stack/ipv4/udp/udp.c	2015-02-18 10:12:01.000000000 +0100
++++ xenomai-3.0-rc4/kernel/drivers/net/stack/ipv4/udp/udp.c	2015-04-03 13:34:17.216720312 +0200
+@@ -707,6 +707,7 @@
+                                         RTDM_SUBCLASS_RTNET,
+                                         RTNET_RTDM_VER),
+     .device_flags =     RTDM_PROTOCOL_DEVICE,
++    .device_count =	1,
+     .context_size =     sizeof(struct rtsocket),
+ 
+     .protocol_family =  PF_INET,

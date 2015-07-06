@@ -1,0 +1,7 @@
+[70698.124188] hid-generic 0003:1D34:000D.0016: hiddev0,hidraw0: USB HID v1.10 Device [Dream Link DL100B Dream Cheeky Generic Controller] on usb-0000:00:14.0-2/input0
+[70845.507330] usb 3-2: USB disconnect, device number 19
+[70847.056206] usb 3-2: new low-speed USB device number 20 using xhci_hcd
+[70847.078880] usb 3-2: New USB device found, idVendor=1d34, idProduct=000d
+[70847.078891] usb 3-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[70847.078899] usb 3-2: Product: DL100B Dream Cheeky Generic Controller
+[70847.078905] usb 3-2: Manufacturer: Dream Link

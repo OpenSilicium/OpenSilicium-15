@@ -1,0 +1,34 @@
+--- xenomai-3.0-rc4.old/kernel/drivers/net/drivers/fec.c	2015-02-18 10:12:00.000000000 +0100
++++ xenomai-3.0-rc4/kernel/drivers/net/drivers/fec.c	2015-05-15 17:31:36.887109849 +0200
+@@ -549,6 +549,13 @@
+ 		}
+ #endif
+ 	}
++	//writel(rcntl, fep->hwp + FEC_R_CNTRL);
++
++	/*set promiscuous mode if needed*/
++	if(ndev->flags & IFF_PROMISC)
++		rcntl |= (1 << 3);
++	else
++		rcntl |= (0 << 3);
+ 	writel(rcntl, fep->hwp + FEC_R_CNTRL);
+ 
+ 	if (id_entry->driver_data & FEC_QUIRK_ENET_MAC) {
+@@ -1047,7 +1054,7 @@
+ 
+ 	snprintf(phy_name, sizeof(phy_name), PHY_ID_FMT, mdio_bus_id, phy_id);
+ 	/* attach the mac to the phy using the dummy linux netdev */
+-	phy_dev = phy_connect(fep->netdev, phy_name, &fec_enet_adjust_link, 0,
++	phy_dev = phy_connect(fep->netdev, phy_name, &fec_enet_adjust_link,
+ 			      fep->phy_interface);
+ 	if (IS_ERR(phy_dev)) {
+ 		printk(KERN_ERR "%s: could not attach to PHY\n", ndev->name);
+@@ -1266,7 +1273,7 @@
+ 
+ 	bdp = fep->rx_bd_base;
+ 	for (i = 0; i < RX_RING_SIZE; i++) {
+-		skb = rtnetdev_alloc_rtskb(netdev, FEC_ENET_RX_FRSIZE); /* RTnet */
++		skb = rtnetdev_alloc_rtskb(ndev, FEC_ENET_RX_FRSIZE); /* RTnet */
+ 		if (!skb) {
+ 			fec_enet_free_buffers(ndev);
+ 			return -ENOMEM;

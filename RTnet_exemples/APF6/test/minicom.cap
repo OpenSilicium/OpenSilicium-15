@@ -1,0 +1,468 @@
+pri
+Unknown command 'bootpri' - try 'help'
+BIOS> pri
+addipargs=setenv bootargs ${bootargs} ip=${ipaddr}:${serverip}:${gatewayip}:${netmask}:${hostname}:eth0:off
+addmmcargs=setenv bootargs ${bootargs} root=${mmcroot} rootfstype=${mmcrootfstype}
+addnfsargs=setenv bootargs ${bootargs} root=/dev/nfs rw nfsroot=${serverip}:${rootpath}
+addsdargs=setenv bootargs console=ttymxc3,115200 user_debug=29 root=/dev/mmcblk0p3 rw rootfstype=ext4 rootwait
+autoload=no
+baudrate=115200
+board_name=apf6
+bootargs=console=ttymxc3,115200 root=/dev/nfs rw nfsroot=10.5.19.86:/tftpboot/apf6-root ip=10.5.18.211:10.5.19.86:10.5.1.1:255.255.0.0:apf6:eth0:off
+bootcmd=run sdboot
+bootdelay=5
+bootfile=pxelinux.0
+check_env=if test -n ${flash_env_version}; then env default env_version; else env set flash_env_version ${env_version}; env save; fi; if itest ${flash_env_version} != ${env_version}; then echo "*** Warning - Environment version change suggests: run flash_reset_env; reset"; env default flash_reset_env; else exit; fi; 
+consoledev=ttymxc3
+dnsip=10.5.1.1
+download_dtb=tftpboot 0x18000000 imx6dl-apf6dev.dtb
+download_kernel=tftpboot ${loadaddr} ${board_name}-linux.bin
+download_uboot_img=tftpboot ${loadaddr} ${board_name}-u-boot.img
+download_uboot_spl=tftpboot ${loadaddr} ${board_name}-u-boot.spl
+emmcboot=setenv bootargs console=${consoledev},${baudrate} ${extrabootargs}; run addmmcargs addipargs; run loadzimage && run loadfdt && bootz ${loadaddr} - ${fdt_addr};
+env_version=5
+ethact=FEC
+ethaddr=00:1e:ac:00:a0:68
+ethprime=FEC
+fdt_addr=0x18000000
+fdt_file=imx6dl-apf6dev.dtb
+fdt_high=0xffffffff
+fileaddr=12000000
+filesize=b19a
+flash_dtb=if ext4write mmc 0:1 ${loadaddr} /dtbs/${fdt_file} ${filesize}; then echo Flashing of dtb succeed; else echo Flashing of dtb failed; fi;
+flash_env_version=1
+flash_kernel=if ext4write mmc 0:1 ${loadaddr} /${board_name}-linux.bin ${filesize}; then echo Flashing of kernel succeed; else echo Flashing of kernel failed; fi;
+flash_reset_env=env default -f -a && saveenv && echo Flash environment variables erased!
+flash_uboot_img=if mmc dev ${mmcdev} 1; then setexpr sz ${filesize} / 0x200; if mmc write ${loadaddr} 0x8a ${sz}; then echo Flashing of U-boot image succeed; else echo Flashing of U-boot image failed; fi; fi;
+flash_uboot_spl=if mmc dev ${mmcdev} 1; then setexpr sz ${filesize} / 0x200; if mmc write ${loadaddr} 0x2 ${sz}; then echo Flashing of U-boot SPL succeed; else echo Flashing of U-boot SPL failed; fi; fi;
+gatewayip=10.5.1.1
+hostname=apf6
+initrd_high=0xffffffff
+ip_dyn=yes
+ipaddr=10.5.18.161
+loadaddr=0x12000000
+loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdt_addr} /dtbs/${fdt_file}
+loadfdtsd=load mmc 1:2 0x18000000 imx6dl-apf6dev.dtb
+loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${board_name}-linux.bin
+loadzimagesd=load mmc 1:1 0x12000000 apf6-linux.bin
+mmcdev=0
+mmcpart=1
+mmcroot=/dev/mmcblk2p2 ro
+mmcrootfstype=ext4 rootwait
+netmask=255.255.0.0
+nfsboot=setenv bootargs console=ttymxc3,115200 ; run addnfsargs addipargs; dhcp; setenv serverip 10.5.19.86 ; run download_kernel; run download_dtb; bootz 0x12000000 - 0x18000000;
+preboot=run check_env;
+rootpath=/home/damien/armadeus/buildroot/output/images/mountext4
+sdboot=setenv bootargs console=ttymxc3,115200 ; run addsdargs addipargs; run loadzimagesd && run loadfdtsd && bootz 0x12000000 - 0x18000000;
+serverip=10.5.1.1
+serverip_persist=10.5.19.86
+update_all=run update_kernel update_dtb update_uboot
+update_dtb=run download_dtb flash_dtb
+update_kernel=run download_kernel flash_kernel
+update_uboot=run download_uboot_spl flash_uboot_spl download_uboot_img flash_uboot_img
+ver=U-Boot 2014.07 (May 21 2015 - 18:37:28)
+
+Environment size: 3689/10235 bytes
+BIOS> bot ot
+5552408 bytes read in 306 ms (17.3 MiB/s)
+31560 bytes read in 30 ms (1 MiB/s)
+Kernel image @ 0x12000000 [ 0x000000 - 0x54b918 ]
+## Flattened Device Tree blob at 18000000
+   Booting using the fdt blob at 0x18000000
+   Using Device Tree in place at 18000000, end 1800ab47
+
+Starting kernel ...
+
+Booting Linux on physical CPU 0x0
+Linux version 3.16.7-ipipe (damien@ubuntuDamien) (gcc version 4.9.2 20140904 (prerelease) (crosstool-NG linaro-1.13.1-4.9-2014.09 - Linaro GCC 4.9-2014.09) ) #24 SMP Mon Apr 20 13:45:02 CEST 2015
+CPU: ARMv7 Processor [412fc09a] revision 10 (ARMv7), cr=10c5387d
+CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+Machine model: Armadeus APF6 i.MX6 Dual Lite Module on APF6Dev Board
+Memory policy: Data cache writeback
+On node 0 totalpages: 131072
+free_area_init_node: node 0, pgdat 80d359c0, node_mem_map 9fbfa000
+  Normal zone: 1024 pages used for memmap
+  Normal zone: 0 pages reserved
+  Normal zone: 131072 pages, LIFO batch:31
+CPU: All CPU(s) started in SVC mode.
+PERCPU: Embedded 780 pages/cpu @9f5c1000 s3171584 r8192 d15104 u3194880
+pcpu-alloc: s3171584 r8192 d15104 u3194880 alloc=780*4096
+pcpu-alloc: [0] 0 [0] 1 
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 130048
+Kernel command line: console=ttymxc3,115200 user_debug=29 root=/dev/mmcblk0p3 rw rootfstype=ext4 rootwait ip=10.5.18.161:10.5.1.1:10.5.1.1:255.255.0.0:apf6:eth0:off
+PID hash table entries: 2048 (order: 1, 8192 bytes)
+Dentry cache hash table entries: 65536 (order: 6, 262144 bytes)
+Inode-cache hash table entries: 32768 (order: 5, 131072 bytes)
+Memory: 491056K/524288K available (7035K kernel code, 394K rwdata, 2512K rodata, 3577K init, 8777K bss, 33232K reserved)
+Virtual kernel memory layout:
+    vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+    fixmap  : 0xffc00000 - 0xffe00000   (2048 kB)
+    vmalloc : 0xa0800000 - 0xff000000   (1512 MB)
+    lowmem  : 0x80000000 - 0xa0000000   ( 512 MB)
+    modules : 0x7f000000 - 0x80000000   (  16 MB)
+      .text : 0x80008000 - 0x8095b13c   (9549 kB)
+      .init : 0x8095c000 - 0x80cda500   (3578 kB)
+      .data : 0x80cdc000 - 0x80d3e850   ( 395 kB)
+       .bss : 0x80d3e850 - 0x815d0c88   (8778 kB)
+SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
+Hierarchical RCU implementation.
+	RCU restricting CPUs from NR_CPUS=4 to nr_cpu_ids=2.
+RCU: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=2
+NR_IRQS:16 nr_irqs:16 16
+L2C: DT/platform modifies aux control register: 0x32050000 -> 0x32850000
+L2C-310 erratum 769419 enabled
+L2C-310 enabling early BRESP for Cortex-A9
+L2C-310 full line of zeros enabled for Cortex-A9
+L2C-310 ID prefetch enabled, offset 1 lines
+L2C-310 dynamic clock gating enabled, standby mode enabled
+L2C-310 cache controller enabled, 16 ways, 512 kB
+L2C-310: CACHE_ID 0x410000c8, AUX_CTRL 0x76850001
+Switching to timer-based delay loop
+sched_clock: 32 bits at 66MHz, resolution 15ns, wraps every 65075262448ns
+I-pipe, 66.000 MHz clocksource, wrap in 65075 ms
+global-timer: unable to parse irq
+Interrupt pipeline (release #5)
+Console: colour dummy device 80x30
+Lock dependency validator: Copyright (c) 2006 Red Hat, Inc., Ingo Molnar
+... MAX_LOCKDEP_SUBCLASSES:  8
+... MAX_LOCK_DEPTH:          48
+... MAX_LOCKDEP_KEYS:        8191
+... CLASSHASH_SIZE:          4096
+... MAX_LOCKDEP_ENTRIES:     32768
+... MAX_LOCKDEP_CHAINS:      65536
+... CHAINHASH_SIZE:          32768
+ memory used by lock dependency info: 5167 kB
+ per task-struct memory footprint: 1152 bytes
+Calibrating delay loop (skipped), value calculated using timer frequency.. 132.00 BogoMIPS (lpj=660000)
+pid_max: default: 32768 minimum: 301
+Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+CPU: Testing write buffer coherency: ok
+CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+Setting up static identity map for 0x106e40d0 - 0x106e4140
+CPU1: failed to boot: -38
+Brought up 1 CPUs
+SMP: Total of 1 processors activated.
+CPU: All CPU(s) started in SVC mode.
+devtmpfs: initialized
+VFP support v0.3: implementor 41 architecture 3 part 30 variant 9 rev 4
+pinctrl core: initialized pinctrl subsystem
+regulator-dummy: no parameters
+NET: Registered protocol family 16
+DMA: preallocated 256 KiB pool for atomic coherent allocations
+CPU identified as i.MX6DL, silicon rev 1.1
+vdd1p1: 800 <--> 1375 mV at 1100 mV 
+vdd3p0: 2800 <--> 3150 mV at 3000 mV 
+vdd2p5: 2000 <--> 2750 mV at 2400 mV 
+vddarm: 725 <--> 1450 mV at 1150 mV 
+vddpu: 725 <--> 1450 mV at 1150 mV 
+vddsoc: 725 <--> 1450 mV at 1175 mV 
+hw-breakpoint: found 5 (+1 reserved) breakpoint and 1 watchpoint registers.
+hw-breakpoint: maximum watchpoint size is 4 bytes.
+I-pipe: disabling SMP code
+imx6dl-pinctrl 20e0000.iomuxc: initialized IMX pinctrl driver
+mxs-dma 110000.dma-apbh: initialized
+3P3V: 3300 mV 
+usb_h1_vbus: 5000 mV 
+usb_otg_vbus: 5000 mV 
+SCSI subsystem initialized
+libata version 3.00 loaded.
+usbcore: registered new interface driver usbfs
+usbcore: registered new interface driver hub
+usbcore: registered new device driver usb
+i2c i2c-0: IMX I2C adapter registered
+i2c i2c-1: IMX I2C adapter registered
+i2c i2c-2: IMX I2C adapter registered
+Linux video capture interface: v2.00
+pps_core: LinuxPPS API ver. 1 registered
+pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+PTP clock support registered
+Advanced Linux Sound Architecture Driver Initialized.
+cfg80211: Calling CRDA to update world regulatory domain
+Switched to clocksource ipipe_tsc
+
+=================================
+[ INFO: inconsistent lock state ]
+3.16.7-ipipe #24 Not tainted
+---------------------------------
+inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
+swapper/0/1 [HC0[0]:SC0[0]:HE1:SE1] takes:
+ (&irq_desc_lock_class){?.....}, at: [<8007dea0>] __irq_get_desc_lock+0x60/0xa4
+{IN-HARDIRQ-W} state was registered at:
+  [<80073a6c>] lock_acquire+0xac/0x120
+  [<806e33d0>] _raw_spin_lock+0x38/0x48
+  [<800818e0>] handle_fasteoi_irq+0x28/0x138
+  [<8007db6c>] generic_handle_irq+0x38/0x4c
+  [<80010010>] handle_IRQ+0x5c/0xc0
+  [<8001d488>] __ipipe_do_IRQ+0x34/0x40
+  [<800abd10>] __ipipe_do_sync_stage+0x2b8/0x33c
+  [<800ac4ec>] ipipe_unstall_root+0x88/0xa0
+  [<8006e584>] lock_is_held+0x64/0x74
+  [<800454f8>] worker_pool_assign_id+0x64/0x90
+  [<800488ac>] alloc_unbound_pwq+0x1a0/0x2dc
+  [<8004911c>] apply_workqueue_attrs+0x12c/0x258
+  [<800495b0>] __alloc_workqueue_key+0x160/0x41c
+  [<80970ddc>] init_workqueues+0x2ac/0x3f8
+  [<80008d14>] do_one_initcall+0x90/0x1d8
+  [<8095ccb8>] kernel_init_freeable+0x70/0x1d4
+  [<806d934c>] kernel_init+0x18/0xfc
+  [<8000f58c>] ret_from_fork+0x18/0x24
+irq event stamp: 209130
+hardirqs last  enabled at (209129): [<806e00ac>] mutex_lock_nested+0x334/0x3cc
+hardirqs last disabled at (209130): [<806e34fc>] _raw_spin_lock_irqsave+0x2c/0x5c
+softirqs last  enabled at (208118): [<80031424>] __do_softirq+0x28c/0x320
+softirqs last disabled at (208113): [<800317f4>] irq_exit+0xc0/0x114
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&irq_desc_lock_class);
+  <Interrupt>
+    lock(&irq_desc_lock_class);
+
+ *** DEADLOCK ***
+
+4 locks held by swapper/0/1:
+ #0:  (&dev->mutex){......}, at: [<803ceedc>] __driver_attach+0x58/0xa8
+ #1:  (&dev->mutex){......}, at: [<803ceeec>] __driver_attach+0x68/0xa8
+ #2:  (irq_domain_mutex){+.+...}, at: [<80083e0c>] irq_domain_associate+0x58/0x1d4
+ #3:  (&irq_desc_lock_class){?.....}, at: [<8007dea0>] __irq_get_desc_lock+0x60/0xa4
+
+stack backtrace:
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 3.16.7-ipipe #24
+Backtrace: 
+[<80013870>] (dump_backtrace) from [<80013bb4>] (show_stack+0x20/0x24)
+ r7:00000002 r6:80d0873c r5:00000000 r4:00000000
+[<80013b94>] (show_stack) from [<806dc8f4>] (dump_stack+0x8c/0xa4)
+[<806dc868>] (dump_stack) from [<800706ac>] (print_usage_bug+0x1d8/0x2cc)
+ r7:00000002 r6:9f078498 r5:80e6fb90 r4:9f078000
+[<800704d4>] (print_usage_bug) from [<80070984>] (mark_lock+0x1e4/0x6cc)
+ r9:9f5c3e80 r8:00000000 r7:9f078000 r6:00000002 r5:9f078498 r4:8006fc20
+[<800707a0>] (mark_lock) from [<80070ee4>] (mark_held_locks+0x78/0x90)
+ r10:81571280 r9:9f5c3e80 r8:00000002 r7:00000000 r6:9f078498 r5:9f078000
+ r4:00000003 r3:0000000c
+[<80070e6c>] (mark_held_locks) from [<80070f78>] (trace_hardirqs_on_caller+0x7c/0x1e4)
+ r9:9f5c3e80 r8:00000000 r7:80014838 r6:00000001 r5:9f078000 r4:9f074018
+[<80070efc>] (trace_hardirqs_on_caller) from [<800710f4>] (trace_hardirqs_on+0x14/0x18)
+ r7:9f075b7c r6:ffffffff r5:60000153 r4:800af60c
+[<800710e0>] (trace_hardirqs_on) from [<80014838>] (__ipipe_fast_svc_irq_exit+0x8/0x1c)
+[<800af37c>] (__ipipe_trace) from [<800b088c>] (ipipe_trace_function+0x30/0x38)
+ r10:9f074010 r9:01000000 r8:9fbddeec r7:00000190 r6:00000000 r5:9f27b400
+ r4:00000000
+[<800b085c>] (ipipe_trace_function) from [<8000f66c>] (__gnu_mcount_nc+0x58/0x60)
+[<806e365c>] (_raw_spin_unlock_irqrestore) from [<8007df18>] (__irq_put_desc_unlock+0x34/0x58)
+ r5:9f27b400 r4:00000000
+[<8007dee4>] (__irq_put_desc_unlock) from [<800811e4>] (irq_set_chip+0x50/0x68)
+ r7:00000190 r6:00000000 r5:800817e4 r4:80d0a748
+[<80081194>] (irq_set_chip) from [<80081f6c>] (irq_set_chip_and_handler_name+0x24/0x3c)
+ r4:00000190
+[<80081f48>] (irq_set_chip_and_handler_name) from [<8035081c>] (dw_pcie_msi_map+0x30/0x58)
+ r7:00000190 r6:00000010 r5:9f25c540 r4:00000190
+[<803507ec>] (dw_pcie_msi_map) from [<80083e34>] (irq_domain_associate+0x80/0x1d4)
+ r5:9f27b400 r4:9f25c540
+[<80083db4>] (irq_domain_associate) from [<800844f0>] (irq_create_mapping+0x7c/0x11c)
+ r8:9fbddeec r7:00000190 r6:9f25c540 r5:00000010 r4:00000000
+[<80084474>] (irq_create_mapping) from [<80991d74>] (dw_pcie_host_init+0x324/0x41c)
+ r7:00000000 r6:00000000 r5:80d0a728 r4:00000011
+[<80991a50>] (dw_pcie_host_init) from [<80992090>] (imx6_pcie_probe+0x200/0x290)
+ r9:00000000 r8:9f214320 r7:9f162400 r6:00000000 r5:9f162410 r4:9f214310
+[<80991e90>] (imx6_pcie_probe) from [<803d0998>] (platform_drv_probe+0x28/0x5c)
+ r8:80d0a80c r7:00000000 r6:00000000 r5:80d0a80c r4:9f162410
+[<803d0970>] (platform_drv_probe) from [<803cecf8>] (driver_probe_device+0x114/0x24c)
+ r5:9f162410 r4:815b42a4
+[<803cebe4>] (driver_probe_device) from [<803cef28>] (__driver_attach+0xa4/0xa8)
+ r9:9f26fd00 r8:80ce7d20 r7:00000000 r6:9f162444 r5:80d0a80c r4:9f162410
+[<803cee84>] (__driver_attach) from [<803ccf10>] (bus_for_each_dev+0x7c/0xb0)
+ r7:00000000 r6:803cee84 r5:80d0a80c r4:00000000
+[<803cce94>] (bus_for_each_dev) from [<803ce790>] (driver_attach+0x28/0x30)
+ r6:80d15068 r5:9f213480 r4:80d0a80c
+[<803ce768>] (driver_attach) from [<803ce40c>] (bus_add_driver+0x154/0x200)
+[<803ce2b8>] (bus_add_driver) from [<803cf728>] (driver_register+0x88/0x108)
+ r7:00000000 r6:80991e6c r5:80ce7d20 r4:80d0a80c
+[<803cf6a0>] (driver_register) from [<803d095c>] (__platform_driver_register+0x58/0x6c)
+ r5:80ce7d20 r4:80d0a7f8
+[<803d0904>] (__platform_driver_register) from [<803d0a1c>] (platform_driver_probe+0x30/0xb4)
+[<803d09ec>] (platform_driver_probe) from [<80991e84>] (imx6_pcie_init+0x18/0x24)
+ r5:80ce7d20 r4:809d38dc
+[<80991e6c>] (imx6_pcie_init) from [<80008d14>] (do_one_initcall+0x90/0x1d8)
+[<80008c84>] (do_one_initcall) from [<8095cd54>] (kernel_init_freeable+0x10c/0x1d4)
+ r10:8095c568 r9:809c6b84 r8:80d3e880 r7:000000c3 r6:80d3e880 r5:00000005
+ r4:809d38dc
+[<8095cc48>] (kernel_init_freeable) from [<806d934c>] (kernel_init+0x18/0xfc)
+ r10:00000000 r9:00000000 r8:00000000 r7:00000000 r6:00000000 r5:806d9334
+ r4:00000000
+[<806d9334>] (kernel_init) from [<8000f58c>] (ret_from_fork+0x18/0x24)
+ r5:806d9334 r4:00000000
+imx6q-pcie 1ffc000.pcie: phy link never came up
+imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
+pci_bus 0000:00: root bus resource [io  0x1000-0x10000]
+pci_bus 0000:00: root bus resource [mem 0x01000000-0x01efffff]
+pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+pci 0000:00:00.0: [16c3:abcd] type 01 class 0x060400
+pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x000fffff]
+pci 0000:00:00.0: reg 0x38: [mem 0x00000000-0x0000ffff pref]
+pci 0000:00:00.0: supports D1
+pci 0000:00:00.0: PME# supported from D0 D1 D3hot D3cold
+PCI: bus0: Fast back to back transfers disabled
+PCI: bus1: Fast back to back transfers enabled
+pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
+pci_bus 0000:00: busn_res: [bus 00-ff] end is updated to 01
+pci 0000:00:00.0: BAR 0: assigned [mem 0x01000000-0x010fffff]
+pci 0000:00:00.0: BAR 6: assigned [mem 0x01100000-0x0110ffff pref]
+pci 0000:00:00.0: PCI bridge to [bus 01]
+pci 0000:00:00.0: PCI bridge to [bus 01]
+pci_bus 0000:00: resource 4 [io  0x1000-0x10000]
+pci_bus 0000:00: resource 5 [mem 0x01000000-0x01efffff]
+NET: Registered protocol family 2
+TCP established hash table entries: 4096 (order: 2, 16384 bytes)
+TCP bind hash table entries: 4096 (order: 5, 147456 bytes)
+TCP: Hash tables configured (established 4096 bind 4096)
+TCP: reno registered
+UDP hash table entries: 256 (order: 2, 20480 bytes)
+UDP-Lite hash table entries: 256 (order: 2, 20480 bytes)
+NET: Registered protocol family 1
+RPC: Registered named UNIX socket transport module.
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+RPC: Registered tcp NFSv4.1 backchannel transport module.
+PCI: CLS 64 bytes, default 64
+hw perfevents: enabled with ARMv7 Cortex-A9 PMU driver, 7 counters available
+futex hash table entries: 512 (order: 3, 32768 bytes)
+[Xenomai] scheduling class idle registered.
+[Xenomai] scheduling class rt registered.
+I-pipe: head domain Xenomai registered.
+[Xenomai] Cobalt v3.0-rc4 (Exact Zero) [DEBUG][LTRACE]
+VFS: Disk quotas dquot_6.5.2
+Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+NFS: Registering the id_resolver key type
+Key type id_resolver registered
+Key type id_legacy registered
+fuse init (API version 7.23)
+msgmni has been set to 959
+io scheduler noop registered
+io scheduler deadline registered
+io scheduler cfq registered (default)
+imx-weim 21b8000.weim: Driver registered.
+aer 0000:00:00.0:pcie02: service driver aer loaded
+pcieport 0000:00:00.0: Signaling PME through PCIe PME interrupt
+pcie_pme 0000:00:00.0:pcie01: service driver pcie_pme loaded
+imx-sdma 20ec000.sdma: Direct firmware load failed with error -2
+imx-sdma 20ec000.sdma: Falling back to user helper
+imx-sdma 20ec000.sdma: initialized
+Serial: IMX driver
+2020000.serial: ttymxc0 at MMIO 0x2020000 (irq = 58, base_baud = 5000000) is a IMX
+21e8000.serial: ttymxc1 at MMIO 0x21e8000 (irq = 59, base_baud = 5000000) is a IMX
+21ec000.serial: ttymxc2 at MMIO 0x21ec000 (irq = 60, base_baud = 5000000) is a IMX
+21f0000.serial: ttymxc3 at MMIO 0x21f0000 (irq = 61, base_baud = 5000000) is a IMX
+console [ttymxc3] enabled
+serial: Freescale lpuart driver
+[drm] Initialized drm 1.1.0 20060810
+ipu_smfc_init: ioremap 0x02650000 -> a0916000
+imx-ipuv3 2400000.ipu: IPUv3H probed
+brd: module loaded
+loop: module loaded
+spi_imx 2008000.ecspi: probed
+tun: Universal TUN/TAP device driver, 1.6
+tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
+ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+ehci-pci: EHCI PCI platform driver
+ehci-mxc: Freescale On-Chip EHCI Host driver
+usbcore: registered new interface driver usb-storage
+ci_hdrc ci_hdrc.1: EHCI Host Controller
+ci_hdrc ci_hdrc.1: new USB bus registered, assigned bus number 1
+ci_hdrc ci_hdrc.1: USB 2.0 started, EHCI 1.00
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 1 port detected
+mousedev: PS/2 mouse device common for all mice
+snvs_rtc 20cc034.snvs-rtc-lp: rtc core: registered 20cc034.snvs-rtc-lp as rtc0
+i2c /dev entries driver
+imx2-wdt 20bc000.wdog: timeout 60 sec (nowayout=1)
+sdhci: Secure Digital Host Controller Interface driver
+sdhci: Copyright(c) Pierre Ossman
+sdhci-pltfm: SDHCI platform and OF driver helper
+sdhci-esdhc-imx 2190000.usdhc: could not get ultra high speed state, work on normal mode
+mmc0: no vqmmc regulator found
+mmc0: no vmmc regulator found
+mmc0: SDHCI controller on 2190000.usdhc [2190000.usdhc] using ADMA
+mmc1: no vqmmc regulator found
+mmc1: no vmmc regulator found
+mmc1: SDHCI controller on 2194000.usdhc [2194000.usdhc] using ADMA
+mmc2: no vqmmc regulator found
+mmc2: no vmmc regulator found
+mmc2: SDHCI controller on 2198000.usdhc [2198000.usdhc] using ADMA
+usb 1-1: new high-speed USB device number 2 using ci_hdrc
+usbcore: registered new interface driver usbhid
+usbhid: USB HID core driver
+[drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+[drm] No driver support for vblank timestamp query.
+imx-drm display-subsystem: bound imx-ipuv3-crtc.0 (ops ipu_crtc_ops)
+imx-drm display-subsystem: bound imx-ipuv3-crtc.1 (ops ipu_crtc_ops)
+imx-drm display-subsystem: bound display@di0 (ops imx_pd_ops)
+imx-hdmi 120000.hdmi: Detected HDMI controller 0x13:0x1a:0xa0:0xc1
+imx-drm display-subsystem: bound 120000.hdmi (ops hdmi_ops)
+Console: switching to colour frame buffer device 100x30
+imx-drm display-subsystem: fb0:  frame buffer device
+imx-drm display-subsystem: registered panic notifier
+usb-storage 1-1:1.0: USB Mass Storage device detected
+[drm] Initialized imx-drm 1.0.0 20120507 on minor 0
+scsi0 : usb-storage 1-1:1.0
+sgtl5000 1-000a: sgtl5000 revision 0x11
+mmc1: host does not support reading read-only switch. assuming write-enable.
+mmc1: new high speed SDHC card at address 0001
+mmcblk0: mmc1:0001 00000 14.6 GiB 
+ mmcblk0: p1 p2 p3
+1-000a: 1200 mV normal 
+sgtl5000 1-000a: Using internal LDO instead of VDDD
+mmc2: BKOPS_EN bit is not set
+imx-sgtl5000 sound: sgtl5000 <-> 2028000.ssi mapping ok
+mmc2: new DDR MMC card at address 0001
+mmcblk1: mmc2:0001 004G90 3.68 GiB 
+mmcblk1boot0: mmc2:0001 004G90 partition 1 2.00 MiB
+mmcblk1boot1: mmc2:0001 004G90 partition 2 2.00 MiB
+mmcblk1rpmb: mmc2:0001 004G90 partition 3 512 KiB
+imx-spdif sound-spdif: snd-soc-dummy-dai <-> 2004000.spdif mapping ok
+ mmcblk1: p1 p2
+TCP: cubic registered
+NET: Registered protocol family 10
+ mmcblk1boot1: unknown partition table
+sit: IPv6 over IPv4 tunneling driver
+ mmcblk1boot0: unknown partition table
+NET: Registered protocol family 17
+Key type dns_resolver registered
+Registering SWP/SWPB emulation handler
+input: keys as /devices/soc0/keys/input/input0
+snvs_rtc 20cc034.snvs-rtc-lp: setting system clock to 1970-01-01 00:00:01 UTC (1)
+scsi 0:0:0:0: Direct-Access     Kingston DataTraveler 2.0 PMAP PQ: 0 ANSI: 0 CCS
+usb 1-1: reset high-speed USB device number 2 using ci_hdrc
+sd 0:0:0:0: [sda] 1970176 512-byte logical blocks: (1.00 GB/962 MiB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Mode Sense: 23 00 00 00
+sd 0:0:0:0: [sda] No Caching mode page found
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+ sda: sda1
+sd 0:0:0:0: [sda] Attached SCSI removable disk
+ALSA device list:
+  #0: imx6-armadeus-sgtl5000
+  #1: imx-spdif
+EXT4-fs (mmcblk0p3): mounted filesystem with ordered data mode. Opts: (null)
+VFS: Mounted root (ext4 filesystem) on device 179:3.
+devtmpfs: mounted
+Freeing unused kernel memory: 3576K (8095c000 - 80cda000)
+random: nonblocking pool is initialized
+EXT4-fs (mmcblk0p3): re-mounted. Opts: data=ordered
+Starting logging: OK
+Initializing random number generator... done.
+Starting system message bus: Unknown group "lp" in message bus configuration file
+done
+Starting network...
+ip: RTNETLINK answers: File exists
+Starting dropbear sshd: OK
+Mounting all filesystems in /etc/fstab
+mount: mounting usbfs on /proc/bus/usb failed: No such file or directory
+
+Welcome to Armadeus development platform !
+apf6 login: root
+Password: 
+# 

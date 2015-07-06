@@ -1,0 +1,65 @@
+$ sudo ./demo_cn_console 
+----------------------------------------------------
+openPOWERLINK console CN DEMO application
+using openPOWERLINK Stack: V2.1.1
+----------------------------------------------------
+Initializing openPOWERLINK stack...
+--------------------------------------------------
+List of Ethernet cards found in this system: 
+--------------------------------------------------
+1. eth0
+2. wlan0
+3. Linux netfilter log (NFLOG) interface
+      nflog
+4. Linux netfilter queue (NFQUEUE) interface
+      nfqueue
+5. Pseudo-device that captures on all interfaces
+      any
+6. lo
+--------------------------------------------------
+Select the interface to be used for POWERLINK (1-6):1
+--------------------------------------------------
+Initializing process image...
+Size of input process image: 1
+Size of output process image: 1
+oplk_allocProcessImage(): Alloc(1, 1)
+oplk_allocProcessImage: Alloc(0xa3c400, 1, 0xa3c420, 1)
+Linking process image vars:
+Linking process vars... ok
+
+2015/05/26 15:14:00 - StateChangeEvent(0x19) originating event = 0x10 (NmtEventSwReset)
+2015/05/26 15:14:00 - StateChangeEvent(0x29) originating event = 0x20 (NmtEventEnterResetApp)
+2015/05/26 15:14:00 - StateChangeEvent(0x39) originating event = 0x21 (NmtEventEnterResetCom)
+start POWERLINK Stack... ok
+Digital I/O interface with openPOWERLINK is ready!
+
+-------------------------------
+Press Esc to leave the programm
+Press r to reset the node
+Press i to increase digital input
+Press d to decrease digital input
+Press p to print digital outputs
+-------------------------------
+
+2015/05/26 15:14:01 - StateChangeEvent(0x79) originating event = 0x23 (NmtEventEnterResetConfig)
+2015/05/26 15:14:01 - StateChangeEvent(0x11C) originating event = 0x24 (NmtEventEnterCsNotActive)
+2015/05/26 15:14:01 - StateChangeEvent(0x11D) originating event = 0x7 (NmtEventDllCeSoc)
+2015/05/26 15:14:01 - StateChangeEvent(0x15D) originating event = 0x7 (NmtEventDllCeSoc)
+2015/05/26 15:14:17 - PDO change event: (RPDO = 0x1600 to node 0x0 with 1 objects activated)
+2015/05/26 15:14:17 -   1. mapped object 0x6200/1
+2015/05/26 15:14:18 - PDO change event: (TPDO = 0x1A00 to node 0x0 with 1 objects activated)
+2015/05/26 15:14:18 -   1. mapped object 0x6000/1
+2015/05/26 15:14:21 - PDO change event: (RPDO = 0x1600 to node 0x0 with 1 objects activated)
+2015/05/26 15:14:21 -   1. mapped object 0x6200/1
+2015/05/26 15:14:21 - PDO change event: (TPDO = 0x1A00 to node 0x0 with 1 objects activated)
+2015/05/26 15:14:21 -   1. mapped object 0x6000/1
+2015/05/26 15:14:21 - StateChangeEvent(0x79) originating event = 0x13 (NmtEventResetConfig)
+2015/05/26 15:14:21 - StateChangeEvent(0x11C) originating event = 0x24 (NmtEventEnterCsNotActive)
+2015/05/26 15:14:21 - StateChangeEvent(0x11D) originating event = 0x7 (NmtEventDllCeSoc)
+2015/05/26 15:14:21 - StateChangeEvent(0x15D) originating event = 0x7 (NmtEventDllCeSoc)
+2015/05/26 15:14:22 - StateChangeEvent(0x16D) originating event = 0x15 (NmtEventEnableReadyToOperate)
+2015/05/26 15:14:23 - StateChangeEvent(0x1FD) originating event = 0x16 (NmtEventStartNode)
+2015/05/26 15:14:29 - StateChangeEvent(0x11D) originating event = 0x28 (NmtEventNmtCycleError)
+^CReceived termination signal, exiting...
+2015/05/26 15:14:31 - StateChangeEvent:kNmtGsOff originating event = 0x2D (NmtEventSwitchOff)
+Stack is in state off ... Shutdown

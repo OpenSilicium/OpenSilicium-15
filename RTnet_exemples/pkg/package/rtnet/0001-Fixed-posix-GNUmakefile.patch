@@ -1,0 +1,40 @@
+From 85a0018cec011122ad6ba10c163f9226d5c7b102 Mon Sep 17 00:00:00 2001
+From: Pierre FICHEUX <pierre.ficheux@openwide.fr>
+Date: Mon, 27 Apr 2015 18:03:14 +0200
+Subject: [PATCH] Fixed posix GNUmakefile.*
+
+---
+ examples/xenomai/posix/GNUmakefile.am |    2 +-
+ examples/xenomai/posix/GNUmakefile.in |    3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/examples/xenomai/posix/GNUmakefile.am b/examples/xenomai/posix/GNUmakefile.am
+index 2f87b0d..8fdd97a 100644
+--- a/examples/xenomai/posix/GNUmakefile.am
++++ b/examples/xenomai/posix/GNUmakefile.am
+@@ -8,7 +8,7 @@ AM_CFLAGS = \
+ 
+ AM_LDFLAGS = \
+ 	$(XNPOSIX_USER_LDFLAGS) \
+-	-lpthread -lrtdm
++	-lpthread_rt -lxenomai -lpthread -lrt -lrtdm
+ 
+ if CONFIG_RTNET_RTIPV4
+ example_PROGRAMS += rtt-sender rtt-responder
+diff --git a/examples/xenomai/posix/GNUmakefile.in b/examples/xenomai/posix/GNUmakefile.in
+index c835d08..17c224e 100644
+--- a/examples/xenomai/posix/GNUmakefile.in
++++ b/examples/xenomai/posix/GNUmakefile.in
+@@ -275,7 +275,8 @@ AM_CFLAGS = \
+ 
+ AM_LDFLAGS = \
+ 	$(XNPOSIX_USER_LDFLAGS) \
+-	-lpthread -lrtdm
++        -lpthread_rt -lxenomai -lpthread -lrt -lrtdm
++
+ 
+ all: all-am
+ 
+-- 
+1.7.9.5
+

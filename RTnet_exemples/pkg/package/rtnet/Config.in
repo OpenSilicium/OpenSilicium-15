@@ -1,0 +1,20 @@
+config BR2_PACKAGE_RTNET
+	bool "RTnet"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_PACKAGE_XENOMAI
+	depends on BR2_LINUX_KERNEL_EXT_XENOMAI
+	help
+	  Kernel modules for the RTnet Hard Real-Time Networking stack 
+	  for Real-Time Linux.
+
+	  http://www.rtnet.org
+
+comment "rtnet requires time linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+comment "rtnet requires a xenomai real-time linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL_EXT_XENOMAI
+
+comment "rtnet requires xenomai to be built"
+	depends on !BR2_PACKAGE_XENOMAI
+

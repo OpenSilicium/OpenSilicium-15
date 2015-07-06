@@ -1,0 +1,16 @@
+kernel_file=zImage
+console=ttyO0,115200n8
+mmcroot=/dev/mmcblk0p2 rw
+mmcrootfstype=ext4 rootwait
+loadkernel=load mmc ${mmcdev}:${mmcpart} 0x80200000 ${kernel_file}
+loadfdt=load mmc ${mmcdev}:${mmcpart} 0x815f0000 ${fdtfile}
+boot_ftd=run loadkernel; run loadfdt
+
+#
+mmcargs=setenv bootargs consoleblank=0 console=${console} androidboot.console=ttyO0 mem=512M root=${mmcroot} rootfstype=${mmcrootfstype}
+
+# NFS nfsroot=10.5.18.225:/home/michelle/rootfs_bbb_xeno
+#mmcargs=setenv bootargs consoleblank=0 console=${console} androidboot.console=ttyO0 mem=512M root=/dev/nfs rootfstype=nfs nfsroot=10.5.20.81:/home/michelle/rootfs_bbb_xeno ip=dhcp init=/init qemu=1 vt.global_cursor_default=0
+
+#
+uenvcmd=run boot_ftd; run mmcargs; bootz 0x80200000 - 0x815f0000
